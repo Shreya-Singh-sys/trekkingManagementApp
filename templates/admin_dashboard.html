@@ -1,0 +1,393 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Advanced 3D Tactical Glassmorphism & Color Engine -->
+<style>
+    :root {
+        --bg-main: #f1f5f9;
+        --card-bg: #ffffff;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        
+        /* Premium Core Base Colors */
+        --brand-primary: #4f46e5;
+        --brand-success: #10b981;
+        --brand-danger: #ef4444;
+        --brand-warning: #f59e0b;
+        
+        /* 3D Tactile Shadows */
+        --shadow-3d-sm: 0 2px 4px rgba(0,0,0,0.02), 0 4px 12px rgba(15, 23, 42, 0.05);
+        --shadow-3d-md: 0 4px 6px -1px rgba(0,0,0,0.03), 0 10px 25px -5px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+        --shadow-3d-lg: 0 20px 30px -10px rgba(15, 23, 42, 0.12), inset 0 1px 1px rgba(255,255,255,0.8);
+        --shadow-inset-soft: inset 0 2px 5px rgba(15, 23, 42, 0.06);
+    }
+
+    body {
+        background-color: var(--bg-main);
+        color: var(--text-primary);
+        font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+
+    .dashboard-header {
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: var(--text-primary);
+        text-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    /* 3D Soft Raised Card base */
+    .card-3d {
+        background: var(--card-bg);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        border-radius: 16px;
+        box-shadow: var(--shadow-3d-md);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+    }
+
+    .card-3d:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-3d-lg);
+    }
+
+    /* Tactile Metrics Elements */
+    .metric-card {
+        border-top: 4px solid var(--brand-primary);
+    }
+    .metric-card.trekkers { border-top-color: var(--brand-success); }
+    .metric-card.staff { border-top-color: var(--brand-warning); }
+    .metric-card.bookings { border-top-color: #3b82f6; }
+
+    .metric-title {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-secondary);
+        font-weight: 700;
+    }
+
+    .metric-value {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        letter-spacing: -0.02em;
+    }
+
+    /* Depth Form Controls */
+    .form-control-3d {
+        background-color: #f8fafc;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        box-shadow: var(--shadow-inset-soft);
+        transition: all 0.2s ease;
+    }
+
+    .form-control-3d:focus {
+        background-color: #ffffff;
+        border-color: var(--brand-primary);
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15), var(--shadow-inset-soft);
+    }
+
+    /* Premium Sculpted Tables */
+    .table-3d-wrapper {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+        box-shadow: var(--shadow-inset-soft);
+        background: #ffffff;
+    }
+
+    .table-3d th {
+        background: #f8fafc !important;
+        color: var(--text-secondary);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.72rem;
+        letter-spacing: 0.06em;
+        padding: 14px 12px;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .table-3d td {
+        padding: 12px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    /* Quick Edit Visual Break */
+    .quick-edit-zone {
+        background-color: #f8fafc !important;
+        box-shadow: inset 4px 0 0 var(--brand-success), var(--shadow-inset-soft);
+    }
+
+    /* Better 3D Pill Badges */
+    .badge-3d {
+        font-weight: 600;
+        padding: 0.4em 0.8em;
+        border-radius: 6px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    /* Soft Tactile Buttons */
+    .btn-3d-primary {
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        color: white;
+        border: none;
+        font-weight: 600;
+        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2), 0 2px 4px -1px rgba(79, 70, 229, 0.1), inset 0 1px 0 rgba(255,255,255,0.2);
+        transition: all 0.2s;
+    }
+
+    .btn-3d-primary:hover {
+        background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+        transform: translateY(1px);
+        box-shadow: 0 2px 4px rgba(79, 70, 229, 0.1);
+    }
+
+    .btn-3d-secondary {
+        background: #ffffff;
+        color: var(--text-secondary);
+        border: 1px solid #d1d5db;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05), inset 0 1px 0 #ffffff;
+        font-weight: 600;
+    }
+    
+    .btn-3d-secondary:hover {
+        background: #f8fafc;
+        color: var(--text-primary);
+    }
+</style>
+
+<div class="container-fluid py-5 px-4 px-xl-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h2 class="dashboard-header m-0">System Operations Management Control</h2>
+        <span class="badge bg-white text-dark border p-2 px-3 rounded-pill shadow-sm small fw-semibold">
+            <span class="spinner-grow spinner-grow-sm text-success me-2" role="status"></span>Live Engine Status
+        </span>
+    </div>
+
+    <!-- KPI Dashboards Summary Metrics Panels -->
+    <div class="row g-4 mb-5">
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-3d metric-card p-4">
+                <span class="metric-title d-block mb-2">Total Treks</span>
+                <h3 class="metric-value m-0 text-indigo">{{ total_treks }}</h3>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-3d metric-card trekkers p-4">
+                <span class="metric-title d-block mb-2">Trekkers Registered</span>
+                <h3 class="metric-value m-0">{{ total_users }}</h3>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-3d metric-card staff p-4">
+                <span class="metric-title d-block mb-2">Trek Staff</span>
+                <h3 class="metric-value m-0">{{ total_staff }}</h3>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-3d metric-card bookings p-4">
+                <span class="metric-title d-block mb-2">Bookings Count</span>
+                <h3 class="metric-value m-0">{{ total_bookings }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Filtering Tool -->
+    <div class="card card-3d p-4 mb-5" style="border-left: 4px solid var(--text-secondary)">
+        <form method="GET" action="{{ url_for('admin_dashboard') }}" class="row g-3 align-items-center">
+            <div class="col-md-10">
+                <input type="text" name="search" class="form-control form-control-3d p-2 px-3" placeholder="Search system resources by unique identification code or profile name matches..." value="{{ request.args.get('search','') }}">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-3d-secondary w-100 py-2">Filter View</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Route Entry Modification Engine System -->
+    <div class="row g-4 mb-5">
+        <div class="col-xl-4">
+            <div class="card card-3d p-4 h-100">
+                <div class="border-bottom pb-3 mb-4">
+                    <h5 class="fw-bold m-0 text-dark">Create Functional Trek Route</h5>
+                    <small class="text-muted">Initialize global database space</small>
+                </div>
+                <form action="{{ url_for('admin_create_trek') }}" method="POST">
+                    <div class="mb-3"><input type="text" name="name" placeholder="Trek Name" class="form-control form-control-3d" required></div>
+                    <div class="mb-3"><input type="text" name="location" placeholder="Location" class="form-control form-control-3d" required></div>
+                    <div class="mb-3">
+                        <select name="difficulty" class="form-select form-control-3d" required>
+                            <option value="Easy">Easy</option><option value="Moderate">Moderate</option><option value="Hard">Hard</option>
+                        </select>
+                    </div>
+                    <div class="mb-3"><input type="number" name="duration" placeholder="Duration (Days)" class="form-control form-control-3d" required></div>
+                    <div class="mb-3"><input type="number" name="available_slots" placeholder="Available Slots Capacity" class="form-control form-control-3d" required></div>
+                    <div class="mb-3"><label class="form-label small text-muted mb-1 fw-bold">Start Date</label><input type="date" name="start_date" class="form-control form-control-3d" required></div>
+                    <div class="mb-4"><label class="form-label small text-muted mb-1 fw-bold">End Date</label><input type="date" name="end_date" class="form-control form-control-3d" required></div>
+                    <button class="btn btn-3d-primary w-100 py-2.5 mt-2">Initialize Route Space</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Active Route Tracking Tables -->
+        <div class="col-xl-8">
+            <div class="card card-3d p-4 h-100">
+                <div class="border-bottom pb-3 mb-4">
+                    <h5 class="fw-bold m-0 text-dark">System Treks Tracked</h5>
+                    <small class="text-muted">Live mapping database instances</small>
+                </div>
+                <div class="table-responsive table-3d-wrapper">
+                    <table class="table table-3d align-middle small mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th><th>Name</th><th>Location</th><th>Difficulty</th><th>Capacity</th><th>Staff Assignment</th><th>Status</th><th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for t in all_treks %}
+                            <tr>
+                                <td class="fw-bold text-secondary">#{{ t.id }}</td>
+                                <td class="fw-extrabold text-dark">{{ t.name }}</td>
+                                <td><i class="bi bi-geo-alt text-muted me-1"></i>{{ t.location }}</td>
+                                <td>
+                                    {% if t.difficulty == 'Easy' %}<span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2.5">{{ t.difficulty }}</span>
+                                    {% elif t.difficulty == 'Moderate' %}<span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-2.5">{{ t.difficulty }}</span>
+                                    {% else %}<span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2.5">{{ t.difficulty }}</span>{% endif %}
+                                </td>
+                                <td class="fw-semibold">{{ t.available_slots }}</td>
+                                <td>
+                                    {% if t.assigned_staff %}
+                                        <span class="badge bg-success-subtle text-success p-2 border border-success fw-bold"><i class="bi bi-person-check-fill me-1"></i>{{ t.assigned_staff.name }}</span>
+                                    {% else %}
+                                        <form action="{{ url_for('admin_assign_staff', trek_id=t.id) }}" method="POST" class="d-flex gap-1 align-items-center">
+                                            <select name="staff_id" class="form-select form-control-3d py-0 px-1" style="max-width: 100px; height: 30px; font-size: 0.8rem;" required>
+                                                {% for g in available_guides %}
+                                                    <option value="{{ g.id }}">{{ g.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <button class="btn btn-sm btn-dark py-1 px-2 shadow-sm" style="height: 30px; font-size: 0.75rem; border-radius: 6px;">Assign</button>
+                                        </form>
+                                    {% endif %}
+                                </td>
+                                <td><span class="badge bg-secondary badge-3d bg-opacity-75">{{ t.status }}</span></td>
+                                <td>
+                                    <a href="{{ url_for('admin_delete_trek', trek_id=t.id) }}" class="text-danger fw-bold text-decoration-none btn btn-link btn-sm p-0 small">Delete</a>
+                                </td>
+                            </tr>
+                            <!-- Inline Update Form Row -->
+                            <tr class="quick-edit-zone">
+                                <td colspan="8" class="p-3">
+                                    <form action="{{ url_for('admin_update_trek', trek_id=t.id) }}" method="POST" class="row g-2 align-items-center">
+                                        <div class="col-auto small text-dark fw-bold pe-2"><i class="bi bi-pencil-square text-success me-1"></i>Quick Edit:</div>
+                                        <div class="col-md-2">
+                                            <input type="text" name="name" value="{{ t.name }}" class="form-control form-control-3d py-1 px-2" style="font-size: 0.8rem;" required>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" name="location" value="{{ t.location }}" class="form-control form-control-3d py-1 px-2" style="font-size: 0.8rem;" required>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <select name="difficulty" class="form-select form-control-3d py-1 px-2" style="font-size: 0.8rem;" required>
+                                                <option value="Easy" {% if t.difficulty == 'Easy' %}selected{% endif %}>Easy</option>
+                                                <option value="Moderate" {% if t.difficulty == 'Moderate' %}selected{% endif %}>Moderate</option>
+                                                <option value="Hard" {% if t.difficulty == 'Hard' %}selected{% endif %}>Hard</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <input type="number" name="duration" value="{{ t.duration }}" class="form-control form-control-3d py-1 px-1 text-center" style="font-size: 0.8rem;" placeholder="Days" required>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="date" name="start_date" value="{{ t.start_date }}" class="form-control form-control-3d py-1 px-1" style="font-size: 0.75rem;" required>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="date" name="end_date" value="{{ t.end_date }}" class="form-control form-control-3d py-1 px-1" style="font-size: 0.75rem;" required>
+                                        </div>
+                                        <div class="col-auto ms-auto">
+                                            <button type="submit" class="btn btn-sm btn-success py-1 px-3 shadow-sm border-0" style="font-size: 0.8rem; font-weight: 600; background: var(--brand-success)">Save</button>
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Profile Permissions Table Configurations -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-6">
+            <div class="card card-3d p-4">
+                <h5 class="fw-bold mb-4 text-dark border-bottom pb-2"><i class="bi bi-shield-lock text-primary me-2"></i>Staff Deployment Validations</h5>
+                <div class="table-responsive table-3d-wrapper">
+                    <table class="table table-3d align-middle small mb-0">
+                        <thead><tr><th>Name</th><th>Status</th><th class="text-end">Actions</th></tr></thead>
+                        <tbody>
+                            {% for s in all_staff %}
+                            <tr>
+                                <td><span class="fw-bold text-dark">{{ s.name }}</span> <span class="text-muted text-xs d-block">ID: {{ s.id }}</span></td>
+                                <td><span class="badge bg-light text-secondary border px-2">{{ s.status }}</span></td>
+                                <td class="text-end">
+                                    <a href="{{ url_for('admin_toggle_user_status', user_id=s.id, status='Approved') }}" class="btn btn-sm btn-success px-3 py-1 me-1 shadow-sm border-0 small" style="font-size: 0.75rem; background-color: var(--brand-success)">Approve</a>
+                                    <a href="{{ url_for('admin_toggle_user_status', user_id=s.id, status='Blacklisted') }}" class="btn btn-sm btn-danger px-3 py-1 shadow-sm border-0 small" style="font-size: 0.75rem; background-color: var(--brand-danger)">Blacklist</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card card-3d p-4">
+                <h5 class="fw-bold mb-4 text-dark border-bottom pb-2"><i class="bi bi-people text-success me-2"></i>Registered Trekkers</h5>
+                <div class="table-responsive table-3d-wrapper">
+                    <table class="table table-3d align-middle small mb-0">
+                        <thead><tr><th>Name</th><th>Status</th><th class="text-end">Actions</th></tr></thead>
+                        <tbody>
+                            {% for u in all_users %}
+                            <tr>
+                                <td><span class="fw-bold text-dark">{{ u.name }}</span> <span class="text-muted text-xs d-block">ID: {{ u.id }}</span></td>
+                                <td><span class="badge bg-light text-secondary border px-2">{{ u.status }}</span></td>
+                                <td class="text-end">
+                                    <a href="{{ url_for('admin_toggle_user_status', user_id=u.id, status='Approved') }}" class="btn btn-sm btn-outline-success px-3 py-1 me-1 small" style="font-size: 0.75rem; font-weight: 600;">Unblock</a>
+                                    <a href="{{ url_for('admin_toggle_user_status', user_id=u.id, status='Blacklisted') }}" class="btn btn-sm btn-danger px-3 py-1 shadow-sm border-0 small" style="font-size: 0.75rem; background-color: var(--brand-danger)">Blacklist</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Historical Global Booking Logs -->
+    <div class="card card-3d p-4">
+        <h5 class="fw-bold mb-4 text-dark border-bottom pb-2"><i class="bi bi-journal-text text-warning me-2"></i>Historical Global Booking Logs</h5>
+        <div class="table-responsive table-3d-wrapper">
+            <table class="table table-3d align-middle small mb-0">
+                <thead><tr><th>Booking ID</th><th>User</th><th>Trek Location</th><th>Date</th><th>Status</th></tr></thead>
+                <tbody>
+                    {% for b in all_bookings %}
+                    <tr>
+                        <td class="fw-bold text-secondary">#{{ b.id }}</td>
+                        <td class="fw-bold text-dark">{{ b.trekker.name }}</td>
+                        <td><span class="text-dark fw-medium">{{ b.trek.name }}</span> <span class="text-muted small">({{ b.trek.location }})</span></td>
+                        <td class="text-secondary">{{ b.booking_date }}</td>
+                        <td>
+                            <span class="badge {% if b.status == 'Confirmed' or b.status == 'Approved' %}bg-success-subtle text-success{% else %}bg-secondary-subtle text-secondary{% endif %} border px-2.5">
+                                {{ b.status }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

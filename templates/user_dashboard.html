@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Advanced 3D Tactical Glassmorphism & Color Engine (User Interface) -->
+<style>
+    :root {
+        --bg-main: #f1f5f9;
+        --card-bg: #ffffff;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        
+        /* Premium Core Base Colors */
+        --brand-primary: #4f46e5;
+        --brand-success: #10b981;
+        --brand-danger: #ef4444;
+        --brand-warning: #f59e0b;
+        --brand-info: #3b82f6;
+        
+        /* 3D Tactile Shadows */
+        --shadow-3d-sm: 0 2px 4px rgba(0,0,0,0.02), 0 4px 12px rgba(15, 23, 42, 0.05);
+        --shadow-3d-md: 0 4px 6px -1px rgba(0,0,0,0.03), 0 10px 25px -5px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+        --shadow-3d-lg: 0 20px 30px -10px rgba(15, 23, 42, 0.12), inset 0 1px 1px rgba(255,255,255,0.8);
+        --shadow-inset-soft: inset 0 2px 5px rgba(15, 23, 42, 0.06);
+    }
+
+    body {
+        background-color: var(--bg-main);
+        color: var(--text-primary);
+        font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+
+    .dashboard-header {
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: var(--text-primary);
+        text-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    /* 3D Soft Raised Card base */
+    .card-3d {
+        background: var(--card-bg);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        border-radius: 16px;
+        box-shadow: var(--shadow-3d-md);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+    }
+
+    .card-3d:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-3d-lg);
+    }
+
+    /* Depth Form Controls */
+    .form-control-3d {
+        background-color: #f8fafc;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        box-shadow: var(--shadow-inset-soft);
+        transition: all 0.2s ease;
+    }
+
+    .form-control-3d:focus {
+        background-color: #ffffff;
+        border-color: var(--brand-primary);
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15), var(--shadow-inset-soft);
+    }
+
+    /* Premium Tactile Buttons */
+    .btn-3d-primary {
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        color: white;
+        border: none;
+        font-weight: 600;
+        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+        transition: all 0.2s;
+    }
+
+    .btn-3d-primary:hover {
+        background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+        transform: translateY(1px);
+        box-shadow: 0 2px 4px rgba(79, 70, 229, 0.1);
+    }
+
+    .btn-3d-success {
+        background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+        color: white;
+        border: none;
+        font-weight: 600;
+        box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+        transition: all 0.2s;
+    }
+
+    .btn-3d-success:hover:not(.disabled) {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        transform: translateY(1px);
+    }
+
+    .btn-3d-dark {
+        background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+        color: white;
+        border: none;
+        font-weight: 600;
+        box-shadow: 0 4px 6px -1px rgba(30, 41, 59, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+
+    .btn-3d-dark:hover {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        transform: translateY(1px);
+    }
+
+    /* Log history custom styling */
+    .log-item-3d {
+        border-bottom: 1px solid #f1f5f9;
+        transition: background-color 0.2s ease;
+    }
+
+    .log-item-3d:hover {
+        background-color: #f8fafc;
+    }
+</style>
+
+<div class="container-fluid py-5 px-4 px-xl-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h2 class="dashboard-header m-0">Trekker Explorer Console</h2>
+        <span class="badge bg-white text-dark border p-2 px-3 rounded-pill shadow-sm small fw-semibold">
+            <span class="spinner-grow spinner-grow-sm text-indigo me-2" role="status"></span>Explorer Space Active
+        </span>
+    </div>
+
+    <div class="row g-4">
+        <!-- Search and Available Bookings Column -->
+        <div class="col-lg-8">
+            <div class="card card-3d p-4 mb-4" style="border-left: 4px solid var(--brand-primary)">
+                <h5 class="fw-bold mb-3 text-dark">Search Active Trek Route Operations</h5>
+                <form method="GET" action="{{ url_for('user_dashboard') }}" class="row g-3">
+                    <div class="col-md-5">
+                        <input type="text" name="search" placeholder="Search location or name..." class="form-control form-control-3d" value="{{ request.args.get('search','') }}">
+                    </div>
+                    <div class="col-md-4">
+                        <select name="difficulty" class="form-select form-control-3d">
+                            <option value="">All Difficulties</option>
+                            <option value="Easy" {% if request.args.get('difficulty') == 'Easy' %}selected{% endif %}>Easy</option>
+                            <option value="Moderate" {% if request.args.get('difficulty') == 'Moderate' %}selected{% endif %}>Moderate</option>
+                            <option value="Hard" {% if request.args.get('difficulty') == 'Hard' %}selected{% endif %}>Hard</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-3d-primary w-100 py-2">Filter Routes</button>
+                    </div>
+                </form>
+            </div>
+
+            <h4 class="fw-bold mb-4 text-dark mt-5 d-flex align-items-center">
+                <i class="bi bi-compass text-primary me-2"></i>Open Trek Allocations Available
+            </h4>
+            
+            <div class="row g-4">
+                {% if not open_treks %}
+                    <div class="col-12">
+                        <div class="bg-white rounded-4 p-5 text-center border shadow-sm">
+                            <i class="bi bi-map text-muted fs-1 mb-2 d-block"></i>
+                            <p class="text-muted fw-medium m-0">No tracking parameters matching active open schedules found.</p>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                {% for t in open_treks %}
+                <div class="col-md-6">
+                    <div class="card card-3d p-4 h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h5 class="fw-extrabold text-dark m-0 fs-5">{{ t.name }}</h5>
+                                {% if t.difficulty == 'Easy' %}<span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2.5">{{ t.difficulty }}</span>
+                                {% elif t.difficulty == 'Moderate' %}<span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-2.5">{{ t.difficulty }}</span>
+                                {% else %}<span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2.5">{{ t.difficulty }}</span>{% endif %}
+                            </div>
+                            
+                            <p class="text-secondary fw-medium small mb-4">
+                                <i class="bi bi-geo-alt-fill text-danger me-1"></i>Location: <span class="text-dark fw-semibold">{{ t.location }}</span>
+                            </p>
+                            
+                            <ul class="list-unstyled small mb-4 text-secondary">
+                                <li class="mb-2"><i class="bi bi-stopwatch text-muted me-2"></i>Duration: <strong class="text-dark">{{ t.duration }} Days</strong></li>
+                                <li class="mb-2"><i class="bi bi-calendar3 text-muted me-2"></i>Timeline: <span class="text-dark fw-medium">{{ t.start_date }} to {{ t.end_date }}</span></li>
+                                <li class="mb-2">
+                                    <i class="bi bi-people text-muted me-2"></i>Remaining Open Allocations: 
+                                    <span class="badge {% if t.available_slots <= 2 %}bg-danger-subtle text-danger{% else %}bg-info-subtle text-info{% endif %} fw-bold ms-1">
+                                        {{ t.available_slots }} slots
+                                    </span>
+                                </li>
+                                <li class="mb-2"><i class="bi bi-person-badge text-muted me-2"></i>Route Guide: <strong class="text-dark">{{ t.assigned_staff.name if t.assigned_staff else 'Unassigned Staff' }}</strong></li>
+                            </ul>
+                        </div>
+                        
+                        <a href="{{ url_for('user_book_trek', trek_id=t.id) }}" class="btn btn-3d-success w-100 py-2.5 mt-2 {% if t.available_slots <= 0 %}disabled bg-secondary-subtle text-muted opacity-50 border-0 shadow-none{% endif %}">
+                            {% if t.available_slots <= 0 %}
+                                <i class="bi bi-x-circle me-1"></i>Sold Out Capacity
+                            {% else %}
+                                <i class="bi bi-ticket-perforated me-1"></i>Book Allocation Pass
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- User Profile & History Column -->
+        <div class="col-lg-4">
+            <div class="card card-3d p-4 mb-4">
+                <div class="border-bottom pb-2 mb-4">
+                    <h5 class="fw-bold m-0 text-dark"><i class="bi bi-person-gear text-secondary me-2"></i>Edit Profile Metadata</h5>
+                </div>
+                <form action="{{ url_for('user_update_profile') }}" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label small text-muted fw-bold mb-1">Full Name</label>
+                        <input type="text" name="name" value="{{ user_profile.name }}" class="form-control form-control-3d" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label small text-muted fw-bold mb-1">Contact Info</label>
+                        <input type="text" name="contact" value="{{ user_profile.contact }}" class="form-control form-control-3d" required>
+                    </div>
+                    <button type="submit" class="btn btn-3d-dark w-100 py-2">Update Metadata Parameters</button>
+                </form>
+            </div>
+
+            <div class="card card-3d p-4">
+                <div class="border-bottom pb-2 mb-3">
+                    <h5 class="fw-bold m-0 text-dark"><i class="bi bi-clock-history text-secondary me-2"></i>My Booking Log History</h5>
+                </div>
+                
+                {% if not my_bookings %}
+                    <div class="text-center py-4 text-muted">
+                        <i class="bi bi-journal-x fs-3 d-block mb-1"></i>
+                        <span class="small">No dynamic booking histories registered under profile sequence tokens.</span>
+                    </div>
+                {% endif %}
+                
+                <ul class="list-group list-group-flush small">
+                    {% for b in my_bookings %}
+                    <li class="list-group-item px-0 py-3 d-flex justify-content-between align-items-center log-item-3d bg-transparent">
+                        <div>
+                            <strong class="text-dark d-block fs-6 mb-1">{{ b.trek.name }}</strong>
+                            <span class="text-muted text-xs"><i class="bi bi-calendar-event me-1"></i>{{ b.booking_date }}</span>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-light text-secondary border px-2 mb-1 d-inline-block">{{ b.status }}</span>
+                            {% if b.status == 'Booked' and b.trek.status == 'Open' %}
+                                <a href="{{ url_for('user_cancel_booking', booking_id=b.id) }}" class="text-danger fw-bold x-small text-decoration-none d-block mt-1"><i class="bi bi-x-square me-1"></i>Cancel Pass</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

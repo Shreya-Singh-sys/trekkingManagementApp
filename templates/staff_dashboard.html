@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Advanced 3D Tactical Glassmorphism & Color Engine (Staff Interface) -->
+<style>
+    :root {
+        --bg-main: #f1f5f9;
+        --card-bg: #ffffff;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        
+        /* Premium Core Base Colors */
+        --brand-primary: #4f46e5;
+        --brand-success: #10b981;
+        --brand-danger: #ef4444;
+        --brand-warning: #f59e0b;
+        --brand-info: #3b82f6;
+        
+        /* 3D Tactile Shadows */
+        --shadow-3d-sm: 0 2px 4px rgba(0,0,0,0.02), 0 4px 12px rgba(15, 23, 42, 0.05);
+        --shadow-3d-md: 0 4px 6px -1px rgba(0,0,0,0.03), 0 10px 25px -5px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+        --shadow-3d-lg: 0 20px 30px -10px rgba(15, 23, 42, 0.12), inset 0 1px 1px rgba(255,255,255,0.8);
+        --shadow-inset-soft: inset 0 2px 5px rgba(15, 23, 42, 0.06);
+    }
+
+    body {
+        background-color: var(--bg-main);
+        color: var(--text-primary);
+        font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+
+    .dashboard-header {
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: var(--text-primary);
+        text-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    /* 3D Soft Raised Card base */
+    .card-3d {
+        background: var(--card-bg);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        border-radius: 16px;
+        box-shadow: var(--shadow-3d-md);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+    }
+
+    .card-3d:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-3d-lg);
+    }
+
+    /* Depth Form Controls */
+    .form-control-3d {
+        background-color: #f8fafc;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        box-shadow: var(--shadow-inset-soft);
+        transition: all 0.2s ease;
+    }
+
+    .form-control-3d:focus {
+        background-color: #ffffff;
+        border-color: var(--brand-primary);
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15), var(--shadow-inset-soft);
+    }
+
+    /* Premium Sculpted Tables */
+    .table-3d-wrapper {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+        box-shadow: var(--shadow-inset-soft);
+        background: #ffffff;
+    }
+
+    .table-3d th {
+        background: #f8fafc !important;
+        color: var(--text-secondary);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.72rem;
+        letter-spacing: 0.06em;
+        padding: 14px 12px;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .table-3d td {
+        padding: 14px 12px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    /* Trekker Inner Box Visual Break */
+    .trekker-list-zone {
+        background-color: #f8fafc !important;
+        box-shadow: inset 4px 0 0 var(--brand-info), var(--shadow-inset-soft);
+    }
+
+    .trekker-badge-item {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 8px 12px;
+        margin-bottom: 6px;
+        list-style-type: none;
+        box-shadow: var(--shadow-3d-sm);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Soft Tactile Button */
+    .btn-3d-sync {
+        background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+        color: white;
+        border: none;
+        font-weight: 600;
+        box-shadow: 0 4px 6px -1px rgba(30, 41, 59, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+        transition: all 0.2s;
+    }
+
+    .btn-3d-sync:hover {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        transform: translateY(1px);
+        box-shadow: 0 2px 4px rgba(30, 41, 59, 0.1);
+    }
+</style>
+
+<div class="container-fluid py-5 px-4 px-xl-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h2 class="dashboard-header m-0">Trek Staff Operations Control</h2>
+        <span class="badge bg-white text-dark border p-2 px-3 rounded-pill shadow-sm small fw-semibold">
+            <span class="spinner-grow spinner-grow-sm text-primary me-2" role="status"></span>Staff Terminal Active
+        </span>
+    </div>
+
+    <div class="card card-3d p-4 mb-4">
+        <div class="border-bottom pb-3 mb-4">
+            <h4 class="fw-bold m-0 text-dark">Assigned Operational Trek Routings</h4>
+            <small class="text-muted">Manage allocations and customize active parameters</small>
+        </div>
+        
+        {% if not assigned_treks %}
+            <div class="text-center py-5">
+                <div class="text-muted mb-2"><i class="bi bi-folder-x fs-1"></i></div>
+                <p class="text-muted fw-medium">No route sequences currently allocated to your tracking configuration by administration.</p>
+            </div>
+        {% else %}
+            <div class="table-responsive table-3d-wrapper">
+                <table class="table table-3d align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Trek Name</th><th>Location</th><th>Difficulty</th><th>Dates</th><th>Available Capacity Slots</th><th>Current Status</th><th>Update Parameters</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in assigned_treks %}
+                        <tr>
+                            <td><strong class="text-dark fw-extrabold fs-6">{{ t.name }}</strong></td>
+                            <td><i class="bi bi-geo-alt text-muted me-1"></i>{{ t.location }}</td>
+                            <td>
+                                {% if t.difficulty == 'Easy' %}<span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2.5">{{ t.difficulty }}</span>
+                                {% elif t.difficulty == 'Moderate' %}<span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-2.5">{{ t.difficulty }}</span>
+                                {% else %}<span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2.5">{{ t.difficulty }}</span>{% endif %}
+                            </td>
+                            <td class="text-secondary fw-medium"><i class="bi bi-calendar3 text-muted me-2"></i>{{ t.start_date }} to {{ t.end_date }}</td>
+                            
+                            <!-- Main Form Wrapper enclosing all variables safely -->
+                            <form id="form-{{ t.id }}" action="{{ url_for('staff_update_trek', trek_id=t.id) }}" method="POST">
+                                <td>
+                                    <input type="number" name="available_slots" value="{{ t.available_slots }}" class="form-control form-control-3d text-center py-1 fw-bold" style="width: 90px;" required>
+                                </td>
+                                <td>
+                                    <select name="status" class="form-select form-control-3d py-1" style="min-width: 160px;" required>
+                                        <option value="Approved" {% if t.status == 'Approved' %}selected{% endif %}>Approved</option>
+                                        <option value="Open" {% if t.status == 'Open' %}selected{% endif %}>Open (Accepting Bookings)</option>
+                                        <option value="Closed" {% if t.status == 'Closed' %}selected{% endif %}>Closed</option>
+                                        <option value="Completed" {% if t.status == 'Completed' %}selected{% endif %}>Completed</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-sm btn-3d-sync py-1.5 px-3 rounded-3">
+                                        <i class="bi bi-arrow-repeat me-1"></i>Synchronize Parameters
+                                    </button>
+                                </td>
+                            </form>
+                        </tr>
+                        
+                        <!-- Collapsible Trekkers Database Field View -->
+                        <tr class="trekker-list-zone">
+                            <td colspan="7" class="p-4">
+                                <div class="small">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-people-fill text-primary me-2 fs-6"></i>
+                                        <strong class="text-secondary uppercase tracking-wider" style="font-size: 0.75rem;">Registered Trekkers List for Route Sequence:</strong>
+                                    </div>
+                                    
+                                    {% set registered_bookings = t.bookings | selectattr('status', 'equalto', 'Booked') | list %}
+                                    {% if not registered_bookings %}
+                                        <div class="bg-white rounded-3 p-3 border text-center text-muted shadow-sm">
+                                            <i class="bi bi-person-x me-1"></i>No active trekkers assigned yet.
+                                        </div>
+                                    {% else %}
+                                        <ul class="mb-0 ps-0 mt-2">
+                                            {% for rb in registered_bookings %}
+                                                <li class="trekker-badge-item">
+                                                    <div>
+                                                        <span class="fw-bold text-dark"><i class="bi bi-person me-2 text-muted"></i>{{ rb.trekker.name }}</span>
+                                                        <span class="text-muted mx-2">|</span>
+                                                        <span class="text-secondary"><i class="bi bi-telephone me-1 text-muted"></i>Contact Mapping: <strong>{{ rb.trekker.contact }}</strong></span>
+                                                    </div>
+                                                    <span class="badge bg-info-subtle text-info border border-info-subtle px-2">{{ rb.status }}</span>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

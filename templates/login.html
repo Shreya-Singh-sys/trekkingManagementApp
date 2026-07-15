@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 75vh;">
+    <div class="col-md-5">
+        <div class="card p-4">
+            <h3 class="text-center mb-4">Account Authentication</h3>
+            <form action="{{ url_for('login') }}" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" required autocomplete="off">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2">Authenticate Configuration</button>
+            </form>
+            <div class="text-center mt-3">
+                <a href="{{ url_for('register') }}" class="small text-decoration-none">Create a platform account &rarr;</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

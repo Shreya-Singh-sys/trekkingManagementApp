@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h3 class="text-center mb-4">Registration Interface</h3>
+            <form action="{{ url_for('register') }}" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Contact Details</label>
+                    <input type="text" name="contact" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Account Privilege Authorization Role</label>
+                    <select name="role" class="form-select" required>
+                        <option value="user">User (Trekker)</option>
+                        <option value="staff">Trek Staff (Guide)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success w-100 py-2">Commit Registration Details</button>
+            </form>
+            <div class="text-center mt-3">
+                <a href="{{ url_for('login') }}" class="small text-decoration-none">Return to login interface &rarr;</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* 2. Micro reset adjustments that won't overwrite inline custom styling */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 3. Helper layout utilities for table formatting elements */
+.table-responsive {
+    margin-bottom: 1rem;
+}
+
+/* 4. Optimization tweak for ultra small badge indicators */
+.btn-xs {
+    padding: 0.15rem 0.4rem;
+    font-size: 0.75rem;
+    border-radius: 4px;
+}
